@@ -1,19 +1,19 @@
-import { useQueryErrorResetBoundary } from '@tanstack/react-query'
-import { useRouter, type ErrorComponentProps } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
+import { useRouter, type ErrorComponentProps } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
 export function PendingRoute() {
-  return <div role="status">Loading…</div>
+  return <div role="status">Loading…</div>;
 }
 
 export function RouteError({ error }: ErrorComponentProps) {
-  const router = useRouter()
-  const queryErrorResetBoundary = useQueryErrorResetBoundary()
+  const router = useRouter();
+  const queryErrorResetBoundary = useQueryErrorResetBoundary();
 
   // Lets failed suspense queries refetch when the route loads again.
   useEffect(() => {
-    queryErrorResetBoundary.reset()
-  }, [queryErrorResetBoundary])
+    queryErrorResetBoundary.reset();
+  }, [queryErrorResetBoundary]);
 
   return (
     <div role="alert">
@@ -23,9 +23,9 @@ export function RouteError({ error }: ErrorComponentProps) {
         Try again
       </button>
     </div>
-  )
+  );
 }
 
 export function NotFound() {
-  return <p>This page does not exist.</p>
+  return <p>This page does not exist.</p>;
 }

@@ -10,6 +10,10 @@ dev:
 format:
     uv run ruff format .
 
+# Check formatting without changing files
+format-check:
+    uv run ruff format --check .
+
 # Lint code
 lint:
     uv run ruff check .
@@ -23,8 +27,4 @@ test *args:
     uv run pytest {{args}}
 
 # Run all checks (CI-style: format check, lint, types, tests)
-check:
-    uv run ruff format --check .
-    uv run ruff check .
-    uv run ty check
-    uv run pytest
+check: format-check lint typecheck test
