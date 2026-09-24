@@ -1,0 +1,36 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "apps/backend/**"
+      - ".github/workflows/backend.yml"
+  pull_request:
+    paths:
+      - "apps/backend/**"
+      - ".github/workflows/backend.yml"
+
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: apps/backend
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: apps/backend/uv.lock
+      - uses: extractions/setup-just@v3
+      - run: uv sync --locked
+      - run: just format-check
+      - run: just lint
+      - run: just typecheck
+      - run: just test

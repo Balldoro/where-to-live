@@ -1,0 +1,39 @@
+name: Webapp CI
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "apps/webapp/**"
+      - ".github/workflows/webapp.yml"
+  pull_request:
+    paths:
+      - "apps/webapp/**"
+      - ".github/workflows/webapp.yml"
+
+concurrency:
+  group: webapp-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: apps/webapp
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: apps/webapp/package.json
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: apps/webapp/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm build
