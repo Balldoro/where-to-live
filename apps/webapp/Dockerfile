@@ -6,7 +6,7 @@ ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 ENV HUSKY=0
 RUN npm install --global corepack@0.36.0 && corepack enable
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .

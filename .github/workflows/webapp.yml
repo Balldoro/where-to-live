@@ -5,10 +5,12 @@ on:
     branches: [master]
     paths:
       - "apps/webapp/**"
+      - "apps/backend/openapi.json"
       - ".github/workflows/webapp.yml"
   pull_request:
     paths:
       - "apps/webapp/**"
+      - "apps/backend/openapi.json"
       - ".github/workflows/webapp.yml"
 
 concurrency:
@@ -32,11 +34,19 @@ jobs:
           node-version: 26
           cache: pnpm
           cache-dependency-path: apps/webapp/pnpm-lock.yaml
-      - uses: hadolint/hadolint-action@v3.5.0
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: apps/webapp/Dockerfile
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm format:check
-      - run: pnpm typecheck
-      - run: pnpm build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check API client
+        run: pnpm gen:api && git diff --exit-code src/lib/api.gen.ts
+      - name: Lint
+        run: pnpm lint
+      - name: Format
+        run: pnpm format:check
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Build
+        run: pnpm build
