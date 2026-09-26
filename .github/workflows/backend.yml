@@ -29,11 +29,19 @@ jobs:
           enable-cache: true
           cache-dependency-glob: apps/backend/uv.lock
       - uses: extractions/setup-just@v3
-      - uses: hadolint/hadolint-action@v3.5.0
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: apps/backend/Dockerfile
-      - run: uv sync --locked
-      - run: just format-check
-      - run: just lint
-      - run: just typecheck
-      - run: just test
+      - name: Install dependencies
+        run: uv sync --locked
+      - name: Lint
+        run: just lint
+      - name: Format
+        run: just format-check
+      - name: Typecheck
+        run: just typecheck
+      - name: Check OpenAPI is up to date
+        run: just openapi-check
+      - name: Test
+        run: just test

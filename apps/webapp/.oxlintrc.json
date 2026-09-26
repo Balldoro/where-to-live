@@ -15,5 +15,5 @@
     "no-shadow": "off",
     "jsx-a11y/prefer-tag-over-role": "off"
   },
-  "ignorePatterns": ["dist", "src/routeTree.gen.ts"]
+  "ignorePatterns": ["dist", "src/routeTree.gen.ts", "src/lib/api.gen.ts"]
 }

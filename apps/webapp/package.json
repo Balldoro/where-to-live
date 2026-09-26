@@ -14,7 +14,8 @@
     "lint": "oxlint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "cd ../.. && husky apps/webapp/.husky"
+    "prepare": "cd ../.. && husky apps/webapp/.husky",
+    "gen:api": "orval"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.103.2",
@@ -32,6 +33,7 @@
     "@vitejs/plugin-react": "^6.1.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
+    "orval": "^8.37.0",
     "oxlint": "^1.85.0",
     "prettier": "^3.9.9",
     "tailwindcss": "^4.3.3",
