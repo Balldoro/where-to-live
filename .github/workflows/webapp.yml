@@ -29,9 +29,12 @@ jobs:
           package_json_file: apps/webapp/package.json
       - uses: actions/setup-node@v5
         with:
-          node-version: 24
+          node-version: 26
           cache: pnpm
           cache-dependency-path: apps/webapp/pnpm-lock.yaml
+      - uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: apps/webapp/Dockerfile
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm format:check

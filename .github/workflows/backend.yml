@@ -29,6 +29,9 @@ jobs:
           enable-cache: true
           cache-dependency-glob: apps/backend/uv.lock
       - uses: extractions/setup-just@v3
+      - uses: hadolint/hadolint-action@v3.5.0
+        with:
+          dockerfile: apps/backend/Dockerfile
       - run: uv sync --locked
       - run: just format-check
       - run: just lint
