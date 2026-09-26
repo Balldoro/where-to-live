@@ -1,18 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useSystemHealth } from '@/lib/api.gen';
+import { CatchBoundary, createFileRoute } from '@tanstack/react-router';
+import { Suspense } from 'react';
+import { MapError, MapSkeleton, MapView } from '@/modules/map/components';
+import { PlaceholderCard } from '@/components/PlaceholderCard';
 
-export const Route = createFileRoute('/')({
-  component: HomePage,
-});
+export const Route = createFileRoute('/')({ component: HomePage });
 
 function HomePage() {
-  // Temporary check that the generated API client works end to end.
-  const health = useSystemHealth();
-
   return (
-    <>
-      <h1>Where to live?</h1>
-      <p>API status: {health.isPending ? 'checking…' : (health.data?.status ?? 'unreachable')}</p>
-    </>
+    <main className="relative h-dvh">
+      <CatchBoundary getResetKey={() => 'map'} errorComponent={MapError}>
+        <Suspense fallback={<MapSkeleton />}>
+          <MapView />
+        </Suspense>
+      </CatchBoundary>
+      <PlaceholderCard />
+    </main>
   );
 }
