@@ -1,0 +1,49 @@
+services:
+  api:
+    restart: unless-stopped
+    logging:
+      driver: local
+    environment:
+      FORWARDED_ALLOW_IPS: "*"
+  db:
+    restart: unless-stopped
+    logging:
+      driver: local
+  webapp:
+    build:
+      context: ./apps/webapp
+      args:
+        VITE_MAPBOX_API_KEY: ${VITE_MAPBOX_API_KEY:?VITE_MAPBOX_API_KEY is missing}
+    restart: unless-stopped
+    logging:
+      driver: local
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: [no-new-privileges:true]
+    networks: [frontend]
+  caddy:
+    image: caddy:2.11
+    restart: unless-stopped
+    logging:
+      driver: local
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: [no-new-privileges:true]
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?SITE_ADDRESS is missing}
+    volumes:
+      - ./caddy:/etc/caddy:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [frontend]
+    depends_on:
+      - api
+      - webapp
+
+volumes:
+  caddy_data:
+  caddy_config:

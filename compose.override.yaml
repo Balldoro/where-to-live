@@ -1,0 +1,24 @@
+services:
+  api:
+    command:
+      [
+        "fastapi",
+        "dev",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "src/app/main.py",
+      ]
+    ports:
+      - "127.0.0.1:8000:8000"
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/backend/src
+          target: /app/src
+        - action: rebuild
+          path: ./apps/backend/uv.lock
+  db:
+    ports:
+      - "127.0.0.1:5432:5432"
