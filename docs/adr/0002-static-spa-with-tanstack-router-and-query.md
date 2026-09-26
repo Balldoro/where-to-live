@@ -4,7 +4,7 @@ The frontend is a client-only single-page app built with Vite + React, using Tan
 
 The frontend calls the API through `openapi-fetch`, typed by `openapi-typescript` from the OpenAPI schema FastAPI generates. They generate only types, add a thin runtime, and address endpoints by their real paths, so frontend calls map one to one onto FastAPI routes.
 
-The production build is a set of static files served by Caddy, running in a Docker container in the same Compose stack as the API. Caddy also reverse-proxies `/api/*` to FastAPI, so the frontend and the API share one origin.
+The production build is a set of static files served by a small Caddy container (`webapp`) in the same Compose stack as the API. A separate edge Caddy container terminates TLS and routes `/api/*` to FastAPI and everything else to `webapp`, so the frontend and the API share one origin. Keeping the edge separate means a frontend deploy doesn't restart the container that handles TLS and API traffic.
 
 ## Consequences
 

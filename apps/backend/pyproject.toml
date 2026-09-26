@@ -7,7 +7,10 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
+    "alembic>=1.20.0",
     "fastapi[standard]>=0.141.1",
+    "psycopg[binary]>=3.3.6",
+    "sqlalchemy>=2.1.1",
 ]
 
 [build-system]
@@ -22,6 +25,7 @@ dev = [
     "httpx2>=2.13.1",
     "pytest>=9.1.1",
     "ruff>=0.16.8",
+    "testcontainers[postgres]>=4.15.0",
     "ty>=0.0.84",
 ]
 
